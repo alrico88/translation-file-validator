@@ -1,6 +1,6 @@
 {
   "name": "translation-file-validator",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Script to check for missing keys in translation files",
   "main": "index.js",
   "repository": {
