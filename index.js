@@ -87,7 +87,7 @@ class TranslationChecker {
     const unmatchedKeys = TranslationChecker.arrayComparator(asComparatorArray);
 
     const summaryTable = new Table({
-      head: ['Language', 'Missing translations'],
+      head: ['Language', 'Missing translation keys'],
     });
 
     function getMissingContentText(missingContent) {

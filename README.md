@@ -1,38 +1,73 @@
-<br><a name="TranslationChecker"></a>
+# translation-checker
 
-## TranslationChecker
+Script to check for missing keys in translation files
 
-- [TranslationChecker](#TranslationChecker)
-  - [new TranslationChecker()](#new_TranslationChecker_new)
-  - _instance_
-    - [.check()](#TranslationChecker+check) ⇒ <code>void</code>
-  - _static_
-    - [.TranslationChecker](#TranslationChecker.TranslationChecker)
-      - [new TranslationChecker(files)](#new_TranslationChecker.TranslationChecker_new)
+## Installation
 
-<br><a name="new_TranslationChecker_new"></a>
+Using yarn:
 
-### new TranslationChecker()
+`yarn add translation-file-validator -D`
 
-> Helper to check multiple translation files for missing keys between them
-> Logs output as a table in the console
+Or using npm:
 
-<br><a name="TranslationChecker+check"></a>
+`npm i translation-file-validator --save-dev`
 
-### translationChecker.check() ⇒ <code>void</code>
+## Usage
 
-> Compares translation files to see which keys are missing from each other
+Given the following structure:
 
-<br><a name="TranslationChecker.TranslationChecker"></a>
+```javascript
+const es = {
+  hola: 'mundo',
+  nested: {
+    existing: 'both',
+    missing: 'falta',
+  },
+};
 
-### TranslationChecker.TranslationChecker
+const en = {
+  goodbye: 'world',
+  nested: {
+    existing: 'both',
+    deepNest: {
+      missingToo: 'missing',
+    },
+  },
+};
+```
 
-<br><a name="new_TranslationChecker.TranslationChecker_new"></a>
+Create an instance of the checker and pass it an array of `TranslationFile`s with the language and the object containing the translations
 
-#### new TranslationChecker(files)
+```javascript
+const {
+  TranslationChecker,
+  TranslationFile,
+} = require('translation-file-validator');
 
-> Creates an instance of TranslationChecker.
+const languages = [
+  new TranslationFile('Spanish', es),
+  new TranslationFile('English', en),
+];
 
-| Param | Type                                       |
-| ----- | ------------------------------------------ |
-| files | <code>Array.&lt;TranslationFile&gt;</code> |
+const checker = new TranslationChecker(languages);
+```
+
+And run it
+
+```javascript
+checker.check();
+```
+
+It will output a table in your console with the missing keys for each language:
+
+```
+┌──────────┬────────────────────────────┐
+│ Language │ Missing translations       │
+├──────────┼────────────────────────────┤
+│ Spanish  │ goodbye                    │
+│          │ nested.deepNest.missingToo │
+├──────────┼────────────────────────────┤
+│ English  │ hola                       │
+│          │ nested.missing             │
+└──────────┴────────────────────────────┘
+```
