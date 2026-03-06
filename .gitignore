@@ -175,3 +175,5 @@ public/dist
 /dump.rdb
 public/css
 doc/
+dist/
+.zed
