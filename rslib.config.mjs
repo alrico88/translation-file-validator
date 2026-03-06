@@ -5,6 +5,7 @@ export default defineConfig({
     entry: {
       index: "./src/index.ts",
     },
+    tsconfigPath: "./tsconfig.lib.json",
   },
   output: {
     target: "node",
@@ -13,10 +14,23 @@ export default defineConfig({
     {
       format: "esm",
       syntax: "es2021",
+      dts: true,
+      autoExtension: false,
+      output: {
+        filename: {
+          js: "[name].js",
+        },
+      },
     },
     {
       format: "cjs",
       syntax: "es2021",
+      autoExtension: false,
+      output: {
+        filename: {
+          js: "[name].cjs",
+        },
+      },
     },
   ],
 });
