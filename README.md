@@ -1,64 +1,85 @@
 # translation-checker
 
-Script to check for missing keys in translation files
+Check missing keys across translation objects.
 
 ## Installation
 
-Using yarn:
+`pnpm add -D translation-file-validator`
 
-`yarn add translation-file-validator -D`
-
-Or using npm:
-
-`npm i translation-file-validator --save-dev`
+or `npm i --save-dev translation-file-validator`
 
 ## Usage
 
-Given the following structure:
-
-```javascript
+```js
 const es = {
-  hola: 'mundo',
+  hola: "mundo",
   nested: {
-    existing: 'both',
-    missing: 'falta',
+    existing: "both",
+    missing: "falta",
   },
 };
 
 const en = {
-  goodbye: 'world',
+  goodbye: "world",
   nested: {
-    existing: 'both',
+    existing: "both",
     deepNest: {
-      missingToo: 'missing',
+      missingToo: "missing",
     },
   },
 };
 ```
 
-Create an instance of the checker and pass it an array of `TranslationFile`s with the language and the object containing the translations
-
-```javascript
+```js
 const {
   TranslationChecker,
   TranslationFile,
-} = require('translation-file-validator');
+} = require("translation-file-validator");
 
 const languages = [
-  new TranslationFile('Spanish', es),
-  new TranslationFile('English', en),
+  new TranslationFile("Spanish", es),
+  new TranslationFile("English", en),
 ];
 
 const checker = new TranslationChecker(languages);
-```
-
-And run it
-
-```javascript
 checker.check();
 ```
 
-It will output a table in your console with the missing keys for each language:
+## API
+
+```ts
+type ComparatorResult = {
+  locale: string;
+  missingKeys: string[];
+};
+
+checker.check(options?: { log?: boolean }): ComparatorResult[];
+```
+
+```ts
+const result = checker.check({ log: false });
+```
+
+`log` defaults to `true`. Arrays are treated as leaf keys.
+
+### ESM
+
+```js
+import {
+  TranslationChecker,
+  TranslationFile,
+} from "translation-file-validator";
+
+const languages = [
+  new TranslationFile("Spanish", es),
+  new TranslationFile("English", en),
+];
+
+const checker = new TranslationChecker(languages);
+checker.check();
+```
+
+## Console output
 
 ```
 ┌──────────┬────────────────────────────┐
@@ -71,3 +92,9 @@ It will output a table in your console with the missing keys for each language:
 │          │ nested.missing             │
 └──────────┴────────────────────────────┘
 ```
+
+## Development
+
+- `pnpm test`
+- `pnpm typecheck`
+- `pnpm build`
